@@ -9,4 +9,28 @@ package generic
 // NewTypeOK 解决方法： 将类型约束包在interface{}，避免编译器误解为表达式
 type NewTypeOK[T interface{ *int | *float32 }] []T
 
-type DependOnUnderlyingType[T int | string] int
+// 指定底层类型
+// 具有相同底层类型的值能够相互赋值
+// 使用 ~ 时有一定的限制：
+// 	~ 后面的类型不能为接口
+//	~ 后面的类型必须为基本类型
+
+type Float interface {
+	~float32 | ~float64 // 并集
+}
+
+type Int interface {
+	~int8 | ~uint8 | ~int | ~uint // .. cmp.Ordered
+}
+
+type UnderlyingType[T Float | Int] []T // 这和[T ~float32 | ~float64 | ~int8 | ~uint8 | ~int | ~uint ]在功能上并没有什么不同。
+
+type IByte interface { // 交集，IByte代表string和[]byte的交集 ~[]byte
+	string
+	~[]byte
+}
+
+type EmptySet interface { // 空集，没有相交的类型，可以编译通过但没有实际意义
+	~float64
+	int
+}

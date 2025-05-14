@@ -49,3 +49,8 @@ type IExample[T any] interface {
 type Example[T int] struct{}
 
 func (e Example[T]) Print(t T) {} // 实现泛型类型接口
+
+// 空接口：包含所有类型的类型集
+// type any = interface{} // builtin alias[别名]
+
+type NewSlice[T any] []T // 支持所有类型元素的泛型类型切片

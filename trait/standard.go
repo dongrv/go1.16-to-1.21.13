@@ -44,6 +44,7 @@ func Cmp() {
 	cmp.Compare(1, 2) // 只能比较 cmp.Ordered 泛型类型的参数
 	cmp.Less(1, 2)
 	// 更高Go版本支持更多的函数，自己可以研究下
+	// 更多标准泛型类型定义：golang.org/x/exp/constraints
 }
 
 // Context 新增允许设置取消原因的上下文
