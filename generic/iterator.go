@@ -14,3 +14,12 @@ func (i *Iterator[T]) Iter() T {
 	i.n++
 	return i.n
 }
+
+type Iterator2[T Integer] struct{ doer func() T }
+
+func (i *Iterator2[T]) Iter() T {
+	if i.doer != nil {
+		return i.doer()
+	}
+	return 0
+}
