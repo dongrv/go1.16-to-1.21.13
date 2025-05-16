@@ -185,3 +185,5 @@ type IAllow interface {
 //type INotAllow interface {
 //	~int | IAllow // Cannot use interfaces with methods in union
 //}
+
+// 综上：太多了容易混淆，只需要按照面向编译器编程，编译器没报错就说明泛型代码没问题。
