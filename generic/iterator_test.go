@@ -23,7 +23,7 @@ func TestIterator_Iter(t *testing.T) {
 	})
 
 	// iterator anonymous functions
-	t.Run("int8-func", func(t *testing.T) {
+	t.Run("int-func", func(t *testing.T) {
 		var i int
 		iter := Iterator2[int]{doer: func() int {
 			i++
@@ -34,5 +34,17 @@ func TestIterator_Iter(t *testing.T) {
 		}
 		v := iter.Iter()
 		assert.Equal(t, v, 10)
+	})
+	t.Run("int64-func", func(t *testing.T) {
+		var i int64
+		iter := Iterator2[int64]{doer: func() int64 {
+			i++
+			return i
+		}}
+		for i := 0; i < 999999; i++ {
+			iter.Iter()
+		}
+		v := iter.Iter()
+		assert.Equal(t, v, int64(1000000))
 	})
 }
