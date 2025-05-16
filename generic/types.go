@@ -160,6 +160,11 @@ type OK interface {
 	comparable
 }
 
+type OK2 interface {
+	comparable
+	~int // 这样是可以的，OK2是 comparable 和 int 的交集，实际OK2就是 ~int 的一般泛型类型，这种交集没有实际意义
+}
+
 //type Bad interface {
 //	~int | comparable // Cannot use comparable in union
 //}
