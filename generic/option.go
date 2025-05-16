@@ -38,7 +38,7 @@ func (o *Option[T]) Clear() {
 
 func (o *Option[T]) Yank() T {
 	if o.IsNone() {
-		panic("gonads: Yank on None Option")
+		panic("tip: Yank on None Option")
 	}
 	return *o.val
 }
