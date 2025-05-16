@@ -10,7 +10,7 @@ func NewOption[T any]() *Option[T] {
 	return &Option[T]{}
 }
 
-var ErrOptionIsNone = errors.New("gonads: Option[T] has no value")
+var ErrOptionIsNone = errors.New("tip: Option[T] has no value")
 
 func (o *Option[T]) IsSome() bool {
 	return o.val != nil
