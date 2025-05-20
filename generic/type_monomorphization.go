@@ -21,7 +21,7 @@ type Slice[T int | float32 | string] []T
 	type Slice_float32 	[]float32
 	type Slice_string 	[]string
 
-· 上述的这个过程叫单态化（Monomorphization），单是指编译器为每个具体类型实例化一份泛型代码的过程。
+· 上述的这个过程叫单态化（Monomorphization），单态化是指编译器为每个具体类型实例化一份泛型代码的过程。
 
 */
 
