@@ -101,12 +101,44 @@ func (csv CSVProcessor) Save(data string) error     { return nil }
 
 // 一般接口类型，存在类型并集
 
+type M int
+
 type DataProcessor2[T any] interface {
-	~int | ~struct{ Data interface{} }
+	~int32 | ~int
 
 	Process(T) T
 	Save(T) error
 }
+
+func (m *M) Process(i int) int {
+	return i
+}
+func (m *M) Save(i int) error {
+	return nil
+}
+
+// 这里 String 也实现了 DataProcessor2[string] 接口
+// Go 语言中，类型隐式实现接口的条件是：类型的方法集合完全包含接口定义的所有方法，且方法的签名（参数类型、返回类型）完全一致。
+
+type String string
+
+func (s String) Process(i string) string {
+	return ""
+}
+
+func (s String) Save(i string) error {
+	return nil
+}
+
+type NumberI64OrI interface {
+	int64 | ~int
+}
+
+func Bar[T NumberI64OrI](t T) T {
+	return t
+}
+
+var result = Bar(M(1)) // Bar接收底层类型为int的类型，M底层类型为int，所以符合条件
 
 // IntNumber 实现了基于底层类型为int、包含 Process(T) T 、Save(T) error 方法的接口 DataProcessor2[T any]
 type IntNumber int
