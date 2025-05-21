@@ -1,5 +1,10 @@
 package generic
 
+import (
+	"fmt"
+	"strings"
+)
+
 // 双向链表
 
 type LinkedList[T comparable] struct {
@@ -70,4 +75,66 @@ func (list *LinkedList[T]) Find(f func(T) bool) *Node[T] {
 		}
 	}
 	return nil
+}
+
+type Processor[T, R any] interface {
+	Process(T) R
+}
+
+type StringProcessor struct{}
+
+func (s StringProcessor) Process(in string) string {
+	return strings.ReplaceAll(in, " ", "")
+}
+
+type IntProcessor struct{}
+
+func (i IntProcessor) Process(in int) int {
+	return in * in
+}
+
+func RunProcess[T, R any](p Processor[T, R], ts []T) []R {
+	outs := make([]R, 0, len(ts))
+	for _, v := range ts {
+		outs = append(outs, p.Process(v))
+	}
+	return outs
+}
+
+// 装饰器模式泛型实现
+
+type Decorator[T any] interface {
+	Decorate(func(T) T) func(T) T
+}
+
+type LoggingDecorator[T any] struct{}
+
+func (l *LoggingDecorator[T]) Decorate(f func(T) T) func(T) T {
+	return func(t T) T {
+		v := f(t)
+		fmt.Printf("logging: %v", v)
+		return v
+	}
+}
+
+type ValidatorDecorator[T any] struct {
+	validate func(T) bool
+}
+
+func (v *ValidatorDecorator[T]) Decorate(f func(T) T) func(T) T {
+	return func(t T) T {
+		var zero T
+		if !v.validate(t) {
+			fmt.Println("validate fail")
+			return zero
+		}
+		return f(t)
+	}
+}
+
+func ApplyDecorator[T any](f func(T) T, decorators ...Decorator[T]) func(T) T {
+	for _, decorator := range decorators {
+		f = decorator.Decorate(f)
+	}
+	return f
 }
