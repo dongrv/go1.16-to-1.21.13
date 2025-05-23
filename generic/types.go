@@ -1,6 +1,9 @@
 package generic
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 // Min 泛型类型函数
 func Min[T int | int32 | int64 | float32 | float64](ts ...T) T {
@@ -222,5 +225,36 @@ type IAllow interface {
 //type INotAllow interface {
 //	~int | IAllow // Cannot use interfaces with methods in union
 //}
+
+// 类型约束为：结构体、底层为结构体
+// 类型约束为结构体 struct{} ，则实现的具体结构体必须保持和约束的结构体类型完全一致（字段名字、数量、类型、顺序、方法），才能视为满足类型约束条件
+// 类型约束为底层结构体 ~struct{} ，所有类型的底层类型实现了约束规则（同struct{}）视为满足了类型约束条件
+
+type IDefault interface {
+	~struct {
+		ID   int
+		Name string
+	}
+	Hi() string
+}
+
+type Person struct {
+	ID   int
+	Name string
+}
+
+func (p Person) Hi() string {
+	return fmt.Sprintf("Hi, my name is %s and ID is %d", p.Name, p.ID)
+}
+
+type American Person
+
+func (a American) Hi() string {
+	return fmt.Sprintf("Hi, my name is %s and ID is %d. I'm an American.", a.Name, a.ID)
+}
+
+func Hi[T IDefault](t T) {
+	println(t.Hi())
+}
 
 // 综上：太多了容易混淆，只需要按照面向编译器编程，编译器没报错就说明泛型代码没问题。

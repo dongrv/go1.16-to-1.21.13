@@ -16,4 +16,12 @@ func TestTypes(t *testing.T) {
 
 	t.Run("basic-interface", func(t *testing.T) { LoopBasicInterface() })
 
+	t.Run("hi", func(t *testing.T) {
+		person := Person{ID: 1, Name: "Alice"}
+		Hi(person)
+
+		american := American{ID: 1, Name: "Alice"}
+		Hi(american)
+
+	})
 }
