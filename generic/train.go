@@ -249,7 +249,7 @@ func (v *Vector[T]) Dot(a, b []T) T {
 	}
 	var sum T
 	for i := range a {
-		sum += a[i] + b[i]
+		sum += a[i] * b[i]
 	}
 	return sum
 }
